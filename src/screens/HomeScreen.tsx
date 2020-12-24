@@ -5,7 +5,7 @@ import ShopReviewItem from "../components/ShopReviewItem";
 import { getShops } from "../lib/firebase";
 import { Shop } from "../types/shop";
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const [shops, setShops] = useState<Shop[]>([]);
 
   useEffect(() => {
@@ -17,12 +17,16 @@ const HomeScreen = () => {
     setShops(shops);
   };
 
+  const onPressShop = () => {
+    navigation.navigate("Shop");
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
         data={shops}
         renderItem={({ item }: { item: Shop }) => (
-          <ShopReviewItem shop={item} />
+          <ShopReviewItem shop={item} onPress={onPressShop} />
         )}
         keyExtractor={(item, index) => index.toString()}
         numColumns={2}

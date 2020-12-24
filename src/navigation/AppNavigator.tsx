@@ -1,10 +1,11 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import HomeScreen from "../screen/HomeScreen";
+import HomeScreen from "../screens/HomeScreen";
+import HomeStackNavigator from "./HomeStackNavigator";
 
 const AppNavigator = () => (
   <NavigationContainer>
-    <HomeScreen />
+    <HomeStackNavigator />
   </NavigationContainer>
 );
 
