@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, FlatList, SafeAreaView } from "react-native";
+import { StyleSheet, FlatList, SafeAreaView } from "react-native";
 import "firebase/firestore";
 import { getShops } from "./src/lib/firebase";
 import { Shop } from "./src/types/shop";
@@ -16,12 +16,6 @@ const App = () => {
     const shops = await getShops();
     setShops(shops);
   };
-
-  const shopItems = shops.map((shop, index) => (
-    <View key={index.toString()}>
-      <ShopReviewItem shop={shop} />
-    </View>
-  ));
 
   return (
     <SafeAreaView style={styles.container}>

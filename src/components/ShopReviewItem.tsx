@@ -11,7 +11,8 @@ const { width } = Dimensions.get("window");
 const CONTAINER_WIDTH = width / 2;
 const PADDING = 16;
 const IMAGE_WIDTH = CONTAINER_WIDTH - PADDING * 2;
-console.log("width type is >>>", typeof width);
+// console.log("width type is >>>", typeof width);
+
 const ShopReviewItem: React.FC<Props> = ({ shop }: Props) => {
   const { name, place, imageUrl, score } = shop;
 
@@ -46,4 +47,5 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
 });
+
 export default ShopReviewItem;

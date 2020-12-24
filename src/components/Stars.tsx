@@ -1,6 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
+
 type Props = {
   score: number;
   starSize?: number;
@@ -53,4 +54,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
+
 export default Stars;
