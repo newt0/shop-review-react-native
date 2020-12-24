@@ -4,8 +4,13 @@ import "firebase/firestore";
 import ShopReviewItem from "../components/ShopReviewItem";
 import { getShops } from "../lib/firebase";
 import { Shop } from "../types/shop";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../types/navigation";
 
-const HomeScreen = ({ navigation }) => {
+type Props = {
+  navigation: StackNavigationProp<RootStackParamList, "Home">;
+};
+const HomeScreen = ({ navigation }: Props) => {
   const [shops, setShops] = useState<Shop[]>([]);
 
   useEffect(() => {

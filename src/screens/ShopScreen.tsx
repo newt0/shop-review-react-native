@@ -1,7 +1,15 @@
+import { RouteProp } from "@react-navigation/core";
+import { StackNavigationProp } from "@react-navigation/stack";
 import React, { useState, useEffect } from "react";
 import { StyleSheet, SafeAreaView, Text } from "react-native";
+import { RootStackParamList } from "../types/navigation";
 
-const ShopScreen: React.FC = () => {
+type Props = {
+  navigation: StackNavigationProp<RootStackParamList, "Shop">;
+  route: RouteProp<RootStackParamList, "Shop">;
+};
+
+const ShopScreen: React.FC<Props> = ({ navigation, route }: Props) => {
   useEffect(() => {}, []);
 
   return (
