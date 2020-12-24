@@ -10,6 +10,7 @@ import { RootStackParamList } from "../types/navigation";
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, "Home">;
 };
+
 const HomeScreen = ({ navigation }: Props) => {
   const [shops, setShops] = useState<Shop[]>([]);
 
@@ -22,8 +23,8 @@ const HomeScreen = ({ navigation }: Props) => {
     setShops(shops);
   };
 
-  const onPressShop = () => {
-    navigation.navigate("Shop");
+  const onPressShop = (shop: Shop) => {
+    navigation.navigate("Shop", { shop });
   };
 
   return (
@@ -31,7 +32,7 @@ const HomeScreen = ({ navigation }: Props) => {
       <FlatList
         data={shops}
         renderItem={({ item }: { item: Shop }) => (
-          <ShopReviewItem shop={item} onPress={onPressShop} />
+          <ShopReviewItem shop={item} onPress={() => onPressShop(item)} />
         )}
         keyExtractor={(item, index) => index.toString()}
         numColumns={2}
