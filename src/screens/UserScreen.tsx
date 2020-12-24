@@ -19,7 +19,12 @@ const UserScreen: React.FC<Props> = ({ navigation, route }: Props) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
 });
 
 export default UserScreen;
