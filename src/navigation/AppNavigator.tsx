@@ -4,7 +4,7 @@ import MainTabNavigator from "./MainTabNavigator";
 import AuthScreen from "../screens/AuthScreen";
 
 const AppNavigator = () => {
-  const user = { id: "123" }; // const user = null
+  const user = null;
 
   return (
     <NavigationContainer>
