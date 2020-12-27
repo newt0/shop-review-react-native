@@ -25,12 +25,13 @@ const UserScreen: React.FC<Props> = ({ navigation, route }: Props) => {
     setLoading(true);
     const updatedAt = firebase.firestore.Timestamp.now();
     await updateUser(user.id, {
-      name: name,
-      updatedAt: updatedAt,
-    }); // nameでも可
+      name,
+      updatedAt,
+    });
     setUser({ ...user, name, updatedAt });
     setLoading(false);
   };
+
   return (
     <SafeAreaView style={styles.container}>
       <Loading visible={loading} />
