@@ -39,3 +39,7 @@ export const signIn = async () => {
     } as User;
   }
 };
+
+export const updateUser = async (userId: string, params: any) => {
+  await firebase.firestore().collection("users").doc(userId).update(params)
+}

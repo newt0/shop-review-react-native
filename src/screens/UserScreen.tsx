@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import { StyleSheet, FlatList, SafeAreaView, Text } from "react-native";
 import "firebase/firestore";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types/navigation";
+import Form from "../components/Form";
+import Button from "../components/Button";
+import { UserContext } from "../contexts/userContexts";
+import { updateUser } from "../lib/firebase";
+import firebase from "firebase";
+import Loading from "../components/Loading";
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, "User">;
@@ -11,9 +17,32 @@ type Props = {
 };
 
 const UserScreen: React.FC<Props> = ({ navigation, route }: Props) => {
+  const { user, setUser } = useContext(UserContext);
+  const [name, setName] = useState<string>(user.name);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const onSubmit = async () => {
+    setLoading(true);
+    const updatedAt = firebase.firestore.Timestamp.now();
+    await updateUser(user.id, {
+      name: name,
+      updatedAt: updatedAt,
+    }); // nameでも可
+    setUser({ ...user, name, updatedAt });
+    setLoading(false);
+  };
   return (
     <SafeAreaView style={styles.container}>
+      <Loading visible={loading} />
       <Text>User Screen</Text>
+      <Form
+        value={name}
+        label={"名前"}
+        onChangeText={(text) => {
+          setName(text);
+        }}
+      />
+      <Button text={"保存する"} onPress={onSubmit} />
     </SafeAreaView>
   );
 };
