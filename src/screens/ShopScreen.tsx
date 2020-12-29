@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { RouteProp } from "@react-navigation/core";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { StyleSheet, SafeAreaView, FlatList } from "react-native";
@@ -8,6 +8,7 @@ import FloatingActionButton from "../components/FloatingActionButton";
 import { Review } from "../types/review";
 import { getReviews } from "../lib/firebase";
 import ReviewItem from "../components/ReviewItem";
+import { ReviewsContext } from "../contexts/reviewsContexts";
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, "Shop">;
@@ -16,8 +17,9 @@ type Props = {
 
 const ShopScreen: React.FC<Props> = ({ navigation, route }: Props) => {
   const { shop } = route.params;
-  const [reviews, setReviews] = useState<Review[]>([]);
-  // console.log("shop is>>>", shop);
+  // const [reviews, setReviews] = useState<Review[]>([]);
+  const { reviews, setReviews } = useContext(ReviewsContext);
+
   useEffect(() => {
     navigation.setOptions({ title: shop.name });
 
