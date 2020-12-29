@@ -6,6 +6,7 @@ import {
   Text,
   View,
   Image,
+  Alert,
 } from "react-native";
 import { RouteProp } from "@react-navigation/core";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -20,6 +21,7 @@ import firebase from "firebase";
 import { Review } from "../types/review";
 import { pickImage } from "../lib/image-picker";
 import { getExtention } from "../utils/file";
+import Loading from "../components/Loading";
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, "CreateReview">;
@@ -30,7 +32,8 @@ const CreateReviewScreen: React.FC<Props> = ({ navigation, route }: Props) => {
   const { shop } = route.params;
   const [text, setText] = useState<string>(""),
     [score, setScore] = useState<number>(0),
-    [imageUri, setImageUri] = useState<string>("");
+    [imageUri, setImageUri] = useState<string>(""),
+    [loading, setLoading] = useState<boolean>(false);
   const { user } = useContext(UserContext);
 
   // useEffect(() => {
@@ -47,6 +50,11 @@ const CreateReviewScreen: React.FC<Props> = ({ navigation, route }: Props) => {
   }, [shop]);
 
   const onSubmit = async () => {
+    if (!text || !imageUri) {
+      Alert.alert("レビューまたは画像がありません");
+      return;
+    }
+    setLoading(true);
     // get the document id
     const reviewDocRef = await createReviewRef(shop.id);
     // decide the path of storage
@@ -71,6 +79,8 @@ const CreateReviewScreen: React.FC<Props> = ({ navigation, route }: Props) => {
       createdAt: firebase.firestore.Timestamp.now(),
     } as Review;
     await reviewDocRef.set(review);
+    setLoading(false);
+    navigation.goBack();
   };
 
   const onPickImage = async () => {
@@ -94,6 +104,7 @@ const CreateReviewScreen: React.FC<Props> = ({ navigation, route }: Props) => {
         )}
       </View>
       <Button text="レビューを投稿する" onPress={onSubmit} />
+      <Loading visible={loading} />
     </SafeAreaView>
   );
 };
