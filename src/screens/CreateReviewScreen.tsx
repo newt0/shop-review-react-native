@@ -1,5 +1,12 @@
 import React, { useEffect, useState, useContext } from "react";
-import { StyleSheet, FlatList, SafeAreaView, Text } from "react-native";
+import {
+  StyleSheet,
+  FlatList,
+  SafeAreaView,
+  Text,
+  View,
+  Image,
+} from "react-native";
 import { RouteProp } from "@react-navigation/core";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types/navigation";
@@ -11,6 +18,7 @@ import { addReview } from "../lib/firebase";
 import { UserContext } from "../contexts/userContexts";
 import firebase from "firebase";
 import { Review } from "../types/review";
+import { pickImage } from "../lib/image-picker";
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, "CreateReview">;
@@ -20,7 +28,8 @@ type Props = {
 const CreateReviewScreen: React.FC<Props> = ({ navigation, route }: Props) => {
   const { shop } = route.params;
   const [text, setText] = useState<string>(""),
-    [score, setScore] = useState<number>(0);
+    [score, setScore] = useState<number>(0),
+    [imageUri, setImageUri] = useState<string>("");
   const { user } = useContext(UserContext);
 
   // useEffect(() => {
@@ -55,6 +64,11 @@ const CreateReviewScreen: React.FC<Props> = ({ navigation, route }: Props) => {
     await addReview(shop.id, review);
   };
 
+  const onPickImage = async () => {
+    const uri = await pickImage();
+    setImageUri(uri);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <StarInput score={score} onChangeScore={(value) => setScore(value)} />
@@ -64,6 +78,12 @@ const CreateReviewScreen: React.FC<Props> = ({ navigation, route }: Props) => {
         label="レビュー"
         placeholder="レビューを書いてください"
       />
+      <View style={styles.photoContainer}>
+        <IconButton name="camera" color="#ccc" onPress={onPickImage} />
+        {!!imageUri && (
+          <Image style={styles.image} source={{ uri: imageUri }} />
+        )}
+      </View>
       <Button text="レビューを投稿する" onPress={onSubmit} />
     </SafeAreaView>
   );
@@ -73,6 +93,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+  },
+  photoContainer: {
+    margin: 8,
+  },
+  image: {
+    width: 100,
+    height: 100,
+    margin: 8,
   },
 });
 
