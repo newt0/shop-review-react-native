@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { StyleSheet, FlatList, SafeAreaView, Text } from "react-native";
 import { RouteProp } from "@react-navigation/core";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -6,6 +6,11 @@ import { RootStackParamList } from "../types/navigation";
 import IconButton from "../components/IconButton";
 import TextArea from "../components/TextArea";
 import StarInput from "../components/StarInput";
+import Button from "../components/Button";
+import { addReview } from "../lib/firebase";
+import { UserContext } from "../contexts/userContexts";
+import firebase from "firebase";
+import { Review } from "../types/review";
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, "CreateReview">;
@@ -16,6 +21,7 @@ const CreateReviewScreen: React.FC<Props> = ({ navigation, route }: Props) => {
   const { shop } = route.params;
   const [text, setText] = useState<string>(""),
     [score, setScore] = useState<number>(0);
+  const { user } = useContext(UserContext);
 
   // useEffect(() => {
   //   console.log(text, score);
@@ -30,6 +36,25 @@ const CreateReviewScreen: React.FC<Props> = ({ navigation, route }: Props) => {
     });
   }, [shop]);
 
+  const onSubmit = async () => {
+    const review = {
+      user: {
+        name: user?.name,
+        id: user?.id,
+      },
+      shop: {
+        name: shop.name,
+        id: shop.id,
+      },
+      text: text,
+      score: score,
+      updatedAt: firebase.firestore.Timestamp.now(),
+      createdAt: firebase.firestore.Timestamp.now(),
+    } as Review;
+
+    await addReview(shop.id, review);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <StarInput score={score} onChangeScore={(value) => setScore(value)} />
@@ -39,6 +64,7 @@ const CreateReviewScreen: React.FC<Props> = ({ navigation, route }: Props) => {
         label="レビュー"
         placeholder="レビューを書いてください"
       />
+      <Button text="レビューを投稿する" onPress={onSubmit} />
     </SafeAreaView>
   );
 };
