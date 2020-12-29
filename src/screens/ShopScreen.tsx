@@ -1,10 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { RouteProp } from "@react-navigation/core";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { StyleSheet, SafeAreaView, Text } from "react-native";
+import { StyleSheet, SafeAreaView, FlatList } from "react-native";
 import ShopDetail from "../components/ShopDetail";
 import { RootStackParamList } from "../types/navigation";
 import FloatingActionButton from "../components/FloatingActionButton";
+import { Review } from "../types/review";
+import { getReviews } from "../lib/firebase";
+import ReviewItem from "../components/ReviewItem";
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, "Shop">;
@@ -13,14 +16,26 @@ type Props = {
 
 const ShopScreen: React.FC<Props> = ({ navigation, route }: Props) => {
   const { shop } = route.params;
+  const [reviews, setReviews] = useState<Review[]>([]);
   // console.log("shop is>>>", shop);
   useEffect(() => {
     navigation.setOptions({ title: shop.name });
+
+    const fetchReviews = async () => {
+      const reviews = await getReviews(shop.id);
+      setReviews(reviews);
+    };
+    fetchReviews();
   }, [shop]);
 
   return (
     <SafeAreaView style={styles.container}>
-      <ShopDetail shop={shop} />
+      <FlatList
+        ListHeaderComponent={<ShopDetail shop={shop} />}
+        data={reviews}
+        renderItem={({ item }) => <ReviewItem review={item} />}
+        keyExtractor={(item) => item.id}
+      />
       <FloatingActionButton
         iconName="plus"
         onPress={() => navigation.navigate("CreateReview", { shop })}

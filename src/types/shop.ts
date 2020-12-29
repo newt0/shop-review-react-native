@@ -1,5 +1,5 @@
 export type Shop = {
-  id?: string;
+  id?: string | undefined;
   name: string;
   place: string;
   imageUrl: string;
