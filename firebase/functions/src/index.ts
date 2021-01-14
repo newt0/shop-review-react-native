@@ -15,7 +15,7 @@ exports.onUpdateUser = functions
 
     try {
       const snapshot = await db
-        .collectionGroup("reviws")
+        .collectionGroup("reviews")
         .where("user.id", "==", userId)
         .get();
 
