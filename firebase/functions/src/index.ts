@@ -2,6 +2,8 @@ import * as functions from "firebase-functions";
 import { User } from "./types/user";
 import admin = require("firebase-admin");
 
+admin.initializeApp();
+
 exports.onUpdateUser = functions
   .region("us-central1")
   .firestore.document("users/{userId}")
