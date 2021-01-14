@@ -16,6 +16,13 @@ exports.onUpdateUser = functions
         .collectionGroup("reviws")
         .where("user.id", "==", userId)
         .get();
+
+      const batch = db.batch();
+      snapshot.docs.forEach((reviewDoc) => {
+        const user = { ...reviewDoc.data().user, name: newUser.name };
+        batch.update(reviewDoc.ref, { user });
+      });
+      await batch.commit();
     } catch (err) {
       console.log(err);
     }
