@@ -12,6 +12,10 @@ exports.onUpdateUser = functions
     const db = admin.firestore();
 
     try {
+      const snapshot = await db
+        .collectionGroup("reviws")
+        .where("user.id", "==", userId)
+        .get();
     } catch (err) {
       console.log(err);
     }
