@@ -80,6 +80,11 @@ exports.onWriteReview = functions
           score3: admin.firestore.FieldValue.increment(1),
           score: aveScore,
         };
+      } else if (review.score === 3) {
+        params = {
+          score3: admin.firestore.FieldValue.increment(1),
+          score: aveScore,
+        };
       } else if (review.score === 4) {
         params = {
           score4: admin.firestore.FieldValue.increment(1),
