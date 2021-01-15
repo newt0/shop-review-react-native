@@ -62,6 +62,36 @@ exports.onWriteReview = functions
         (score1 + score2 * 2 + score3 * 3 + score4 * 4 + score5 * 5) /
         (score1 + score2 + score3 + score4 + score5);
       aveScore = Math.round(aveScore * 100) / 100;
+
+      // update shop
+      let params = {};
+      if (review.score === 1) {
+        params = {
+          score1: admin.firestore.FieldValue.increment(1),
+          score: aveScore,
+        };
+      } else if (review.score === 2) {
+        params = {
+          score2: admin.firestore.FieldValue.increment(1),
+          score: aveScore,
+        };
+      } else if (review.score === 3) {
+        params = {
+          score3: admin.firestore.FieldValue.increment(1),
+          score: aveScore,
+        };
+      } else if (review.score === 4) {
+        params = {
+          score4: admin.firestore.FieldValue.increment(1),
+          score: aveScore,
+        };
+      } else if (review.score === 5) {
+        params = {
+          score5: admin.firestore.FieldValue.increment(1),
+          score: aveScore,
+        };
+      }
+      await shopRef.update(params);
     } catch (err) {
       console.log(err);
     }
