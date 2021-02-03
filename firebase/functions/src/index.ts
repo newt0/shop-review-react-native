@@ -1,8 +1,15 @@
 import * as functions from "firebase-functions";
 import { User } from "./types/user";
+import algoliasearch from "algoliasearch";
 import admin = require("firebase-admin");
 import { Review } from "./types/review";
 import { Shop } from "./types/shop";
+
+const ALGOLIA_ID = functions.config().algolia.id;
+const ALGOLIA_ADMIN_KEY = functions.config().algolia.key;
+
+const client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY);
+const index = client.initIndex("reviews");
 
 admin.initializeApp();
 
