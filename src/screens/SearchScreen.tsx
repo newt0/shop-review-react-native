@@ -1,8 +1,16 @@
 import React, { useEffect, useState, useContext } from "react";
-import { StyleSheet, SafeAreaView, TextInput } from "react-native";
+import {
+  StyleSheet,
+  SafeAreaView,
+  TextInput,
+  FlatList,
+  Text,
+} from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack/lib/typescript/src/types";
 import { RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "../types/navigation";
+import { Review } from "../types/review";
+import { searchReview } from "../lib/algolia";
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, "Search">;
@@ -11,9 +19,24 @@ type Props = {
 
 const SearchScreen: React.FC<Props> = ({ navigation, route }: Props) => {
   const [keyword, setKeyword] = useState<string>();
+  const [reviews, setReviews] = useState<Review[]>([]);
 
-  const onChangeText = (text: string) => {
+  const onChangeText = async (text: string) => {
     setKeyword(text);
+    if (!text) {
+      setReviews([]);
+    } else {
+      const result = await searchReview(text);
+
+      if (result.hits.length > 0) {
+        const reviews = result.hits.map((hit) => {
+          return (hit as unknown) as Review;
+        });
+        setReviews(reviews);
+      } else {
+        setReviews([]);
+      }
+    }
   };
 
   return (
@@ -23,6 +46,11 @@ const SearchScreen: React.FC<Props> = ({ navigation, route }: Props) => {
         placeholder="検索キーワード"
         onChangeText={onChangeText}
         value={keyword}
+      />
+      <FlatList
+        data={reviews}
+        renderItem={({ item }) => <Text>{item.text}</Text>}
+        // keyExtractor={(item) => item.id}
       />
     </SafeAreaView>
   );
