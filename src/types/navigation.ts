@@ -5,5 +5,6 @@ export type RootStackParamList = {
   Shop: { shop: Shop };
   User: undefined;
   CreateReview: { shop: Shop };
+  Search: undefined;
   Main: undefined;
-}
+};
