@@ -15,11 +15,11 @@
   "dependencies": {
     "algoliasearch": "^4.8.4",
     "firebase-admin": "^9.2.0",
-    "firebase-functions": "^3.13.0"
+    "firebase-functions": "^3.13.1"
   },
   "devDependencies": {
-    "typescript": "^3.8.0",
-    "firebase-functions-test": "^0.2.0"
+    "firebase-functions-test": "^0.2.0",
+    "typescript": "^3.8.0"
   },
   "private": true
 }
