@@ -43,7 +43,7 @@ exports.onWriteReview = functions
   .region("us-central1")
   .firestore.document("shops/{shopId}/reviews/{reviewId}")
   .onWrite(async (change, context) => {
-    const { shopId } = context.params;
+    const { shopId, reviewId } = context.params;
     const review = change.after.data() as Review;
     const db = admin.firestore();
     try {
@@ -104,6 +104,11 @@ exports.onWriteReview = functions
         };
       }
       await shopRef.update(params);
+
+      index.saveObject({
+        objectId: reviewId,
+        ...review,
+      });
     } catch (err) {
       console.log(err);
     }
