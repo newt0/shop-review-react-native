@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import UserScreen from "../screens/UserScreen";
 import HomeStackNavigator from "./HomeStackNavigator";
 import { Feather } from "@expo/vector-icons";
+import SearchScreen from "../screens/SearchScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -18,6 +19,16 @@ const MainTabNavigator = () => {
           tabBarLabel: "Home",
           tabBarIcon: ({ color, size }) => (
             <Feather name="home" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="search"
+        component={SearchScreen}
+        options={{
+          tabBarLabel: "Search",
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="search" color={color} size={size} />
           ),
         }}
       />
