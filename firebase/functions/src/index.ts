@@ -106,7 +106,7 @@ exports.onWriteReview = functions
       await shopRef.update(params);
 
       index.saveObject({
-        objectId: reviewId,
+        objectID: reviewId,
         ...review,
       });
     } catch (err) {
