@@ -15,7 +15,6 @@ const AuthScreen: React.FC = () => {
     const fetchUser = async () => {
       const user = await signIn();
       setUser(user);
-      // console.log(setUser);
     };
 
     fetchUser();
