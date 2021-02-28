@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { StyleSheet, FlatList, SafeAreaView, Text } from "react-native";
+import { StyleSheet, SafeAreaView, Text } from "react-native";
 import "firebase/firestore";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
